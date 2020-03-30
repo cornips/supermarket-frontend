@@ -1,18 +1,18 @@
 import styled from "styled-components";
 
-export const AppContainer = styled.div`
+export const ShopContainer = styled.div`
   text-align: center;
 `;
 
-export const AppLogo = styled.img`
+export const ShopLogo = styled.img`
   height: 40vmin;
   pointer-events: none;
 
   @media (prefers-reduced-motion: no-preference) {
-    animation: App-logo-spin infinite 20s linear;
+    animation: Shop-logo-spin infinite 20s linear;
   }
 
-  @keyframes App-logo-spin {
+  @keyframes Shop-logo-spin {
     from {
       transform: rotate(0deg);
     }
@@ -22,7 +22,7 @@ export const AppLogo = styled.img`
   }
 `;
 
-export const AppHeader = styled.header`
+export const ShopHeader = styled.header`
   background-color: #282c34;
   min-height: calc(100vh - 2.5em);
   display: flex;
@@ -33,6 +33,6 @@ export const AppHeader = styled.header`
   color: white;
 `;
 
-export const AppLink = styled.a`
+export const ShopLink = styled.a`
   color: #61dafb;
 `;

@@ -56,8 +56,7 @@ const validateConfig = (...validateProperty) => {
       lastProperty = lastProperty[singleProperty];
 
       if (!lastProperty) {
-        console.error(`Missing property \`${fullProperty}\` in config`);
-        return false;
+        throw new Error(`Missing property \`${fullProperty}\` in config`);
       }
     }
   }
@@ -100,6 +99,7 @@ if (validateConfig("locale")) {
 
 module.exports = Object.assign(
   {
+    config,
     validateObject,
     validateConfig,
     stringToInt
