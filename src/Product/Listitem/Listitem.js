@@ -1,4 +1,8 @@
 import React from "react";
+import { Link, Switch, Route } from "react-router-dom";
+import { isLargerScreen } from "../../helpers";
+import Detail from "../Detail/Detail";
+
 import styled, { css } from "styled-components";
 
 const NoDrag = props => css`
@@ -6,24 +10,51 @@ const NoDrag = props => css`
   -webkit-app-region: no-drag;
 `;
 
-const Link = styled.a`
+const StyledLink = styled.a`
   ${NoDrag}
   text-decoration: none;
   color: inherit;
 `;
 
+const ImgContainer = styled.div`
+  ${NoDrag}
+  height: 80px;
+`;
+
 const Img = styled.img`
   ${NoDrag}
-  width: 100%;
+  height: 100%;
 `;
 
 const Listitem = ({ product }) => {
+  // Prevent empty or undefined product
+  if (!product) return null;
+
   return (
-    <Link href={`/detail/${product.product_id}`}>
-      <h3>{product.name}</h3>
-      <Img src={product.image} alt="" />
-      <p className="price">€ {product.price}</p>
-    </Link>
+    <div>
+      <StyledLink as={Link} to={`/detail/${product.product_id}`}>
+        <h3>{product.name}</h3>
+        <ImgContainer>
+          <Img src={product.image} alt="" />
+        </ImgContainer>
+        <p className="price">€ {product.price}</p>
+      </StyledLink>
+      <Switch>
+        <Route
+          path={`/detail/${product.product_id}`}
+          render={props => {
+            if (isLargerScreen())
+              return (
+                <Detail
+                  {...props}
+                  productId={product.product_id}
+                  popup={true}
+                />
+              );
+          }}
+        />
+      </Switch>
+    </div>
   );
 };
 

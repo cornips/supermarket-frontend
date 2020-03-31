@@ -97,12 +97,28 @@ if (validateConfig("locale")) {
   };
 }
 
+/**
+ * Determine if currently viewed from a larger screen
+ * @return {boolean} True if screen is larger then medium breakpoint
+ */
+const isLargerScreen = () => {
+  validateConfig("breakpoints.medium");
+
+  const windowWidth =
+    window.innerWidth ||
+    document.documentElement.clientWidth ||
+    document.body.clientWidth;
+
+  return windowWidth > config.breakpoints.medium;
+};
+
 module.exports = Object.assign(
   {
     config,
     validateObject,
     validateConfig,
-    stringToInt
+    stringToInt,
+    isLargerScreen
   },
   validateConfig("locale") ? { i18n } : undefined
 ); // Add i18n when enabled in config

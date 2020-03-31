@@ -6,9 +6,10 @@ import Listitem from "../Listitem/Listitem";
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(5, 1fr);
-  grid-column-gap: 0px;
+  grid-template-rows: repeat(1, 1fr);
+  grid-column-gap: 30px;
   grid-row-gap: 0px;
+  margin: 0 2em;
 
   @media only screen and (min-width: ${config.breakpoints.medium}px) {
     grid-template-columns: repeat(3, 1fr);
