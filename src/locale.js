@@ -1,12 +1,13 @@
 const locale = {
   en_US: {
-    "Edit <code>src/App.js</code> and save to reload.": null,
-    "Learn React": null
+    "In cart": null,
+    "Back to overview": null,
+    Productoverview: null
   },
   nl_NL: {
-    "Edit <code>src/App.js</code> and save to reload.":
-      "Bewerk <code>src/App.js</code> and sla op om te herladen.",
-    "Learn React": "Leer React"
+    "In cart": "In winkelwagen",
+    "Back to overview": "Terug naar overzicht",
+    Productoverview: "Productoverzicht"
   }
 };
 
