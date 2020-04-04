@@ -1,6 +1,6 @@
-import React from "react";
+import React, { Component } from "react";
 import styled from "styled-components";
-import { config, i18n } from "../../helpers";
+import { config, i18n } from "../../../helpers";
 import Listitem from "../Listitem/Listitem";
 
 const Grid = styled.div`
@@ -19,17 +19,24 @@ const Grid = styled.div`
   }
 `;
 
-const List = ({ products }) => {
-  return (
-    <div>
-      <h1>{i18n("Productoverzicht")}</h1>
-      <Grid>
-        {products.map(product => (
-          <Listitem product={product} key={product.product_id} />
-        ))}
-      </Grid>
-    </div>
-  );
-};
+class List extends Component {
+  componentDidMount() {
+    // Set title to parent component
+    if (this.props.handleTitleChange)
+      this.props.handleTitleChange(i18n("Productoverview"));
+  }
+
+  render() {
+    return (
+      <div>
+        <Grid>
+          {this.props.products.map(product => (
+            <Listitem product={product} key={product.product_id} />
+          ))}
+        </Grid>
+      </div>
+    );
+  }
+}
 
 export default List;

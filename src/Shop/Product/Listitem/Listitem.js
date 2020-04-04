@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, Switch, Route } from "react-router-dom";
-import { isLargerScreen } from "../../helpers";
+import { isLargerScreen } from "../../../helpers";
 import Detail from "../Detail/Detail";
 
 import styled, { css } from "styled-components";
