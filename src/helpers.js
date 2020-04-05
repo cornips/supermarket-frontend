@@ -5,19 +5,17 @@ const config = require("./config.js");
 const validateObject = (object, scheme) => {
   // Validate if all required fields are provided
   if (Object.entries(object).length <= Object.entries(scheme).length) {
-    console.error(
-      `Object does not contain all required fields according to scheme`
-    );
-    return false;
+    const errorMessage = `Object does not contain all required fields according to scheme`;
+    console.error(errorMessage);
+    throw new Error(errorMessage);
   }
 
   Object.keys(scheme).forEach(key => {
     // Check if key exists in object
     if (Object.keys(object).indexOf(key) < 0) {
-      console.error(
-        `${key} is required by the scheme, but not found in the object`
-      );
-      return false;
+      const errorMessage = `${key} is required by the scheme, but not found in the object`;
+      console.error(errorMessage);
+      throw new Error(errorMessage);
     }
 
     // Retrieve value from object
@@ -25,8 +23,9 @@ const validateObject = (object, scheme) => {
 
     // typeof Array is object, so check object isn't Array
     if (scheme[key] === "object" && Array.isArray(value)) {
-      console.error(`${key} is of type array, should be ${scheme[key]}`);
-      return false;
+      const errorMessage = `${key} is of type array, should be ${scheme[key]}`;
+      console.error(errorMessage);
+      throw new Error(errorMessage);
     }
 
     // Check if value is as expected from scheme
@@ -34,10 +33,11 @@ const validateObject = (object, scheme) => {
       // typeof Array is object, so check that on first fail
       if (!(scheme[key] === "array" && Array.isArray(value))) {
         // An inconsistency was definitely found according to scheme
-        console.error(
-          `${key} is of type ${typeof value}, should be ${scheme[key]}`
-        );
-        return false;
+        const errorMessage = `${key} is of type ${typeof value}, should be ${
+          scheme[key]
+        }`;
+        console.error(errorMessage);
+        throw new Error(errorMessage);
       }
     }
   });
@@ -56,7 +56,9 @@ const validateConfig = (...validateProperty) => {
       lastProperty = lastProperty[singleProperty];
 
       if (!lastProperty) {
-        throw new Error(`Missing property \`${fullProperty}\` in config`);
+        const errorMessage = `Missing property \`${fullProperty}\` in config`;
+        console.error(errorMessage);
+        throw new Error(errorMessage);
       }
     }
   }

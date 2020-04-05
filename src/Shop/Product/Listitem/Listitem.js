@@ -3,28 +3,7 @@ import { Link, Switch, Route } from "react-router-dom";
 import { isLargerScreen } from "../../../helpers";
 import Detail from "../Detail/Detail";
 
-import styled, { css } from "styled-components";
-
-const NoDrag = props => css`
-  -webkit-user-drag: none;
-  -webkit-app-region: no-drag;
-`;
-
-const StyledLink = styled.a`
-  ${NoDrag}
-  text-decoration: none;
-  color: inherit;
-`;
-
-const ImgContainer = styled.div`
-  ${NoDrag}
-  height: 80px;
-`;
-
-const Img = styled.img`
-  ${NoDrag}
-  height: 100%;
-`;
+import { StyledLink, ImgContainer, Img } from "./Listitem.style";
 
 const Listitem = ({ product }) => {
   // Prevent empty or undefined product

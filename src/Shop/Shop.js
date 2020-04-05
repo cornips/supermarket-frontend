@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { isLargerScreen } from "../helpers";
+import { i18n, isLargerScreen } from "../helpers";
 
 import API from "../API";
 import Header from "./Header/Header";
@@ -14,7 +14,7 @@ class Shop extends Component {
     super(props);
 
     this.state = {
-      title: "Productoverzicht",
+      title: i18n("Productoverview"),
       products: [],
       filter: ""
     };

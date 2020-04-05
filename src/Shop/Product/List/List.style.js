@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { config } from "../../../helpers";
+import config from "../../../config";
 
 export const GridContainer = styled.div`
   width: 100%;
