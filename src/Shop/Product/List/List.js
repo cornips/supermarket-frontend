@@ -1,42 +1,64 @@
-import React, { Component } from "react";
-import styled from "styled-components";
-import { config, i18n } from "../../../helpers";
+import React, { useState, useEffect } from "react";
+
+import { i18n } from "../../../helpers";
 import Listitem from "../Listitem/Listitem";
+import Search from "../../Search/Search";
 
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(1, 1fr);
-  grid-column-gap: 30px;
-  grid-row-gap: 0px;
-  margin: 0 2em;
+import { GridContainer, Grid, Message } from "./List.style";
 
-  @media only screen and (min-width: ${config.breakpoints.medium}px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  @media only screen and (min-width: ${config.breakpoints.large}px) {
-    grid-template-columns: repeat(6, 1fr);
-  }
-`;
+const List = props => {
+  const hashValue = unescape(window.location.hash.substr(1));
+  const [filter, setFilter] = useState(hashValue);
 
-class List extends Component {
-  componentDidMount() {
+  useEffect(() => {
     // Set title to parent component
-    if (this.props.handleTitleChange)
-      this.props.handleTitleChange(i18n("Productoverview"));
-  }
+    if (props.handleTitleChange)
+      props.handleTitleChange(i18n("Productoverview"));
+  });
 
-  render() {
-    return (
-      <div>
-        <Grid>
-          {this.props.products.map(product => (
+  // Sanitize value to allow only certain characters
+  const sanitizeValue = v => v.match(/[a-zA-Z0-9- ]*/i)[0].trimStart();
+
+  const applySearch = event => {
+    const sanitizedValue = sanitizeValue(event.target.value);
+
+    if (filter !== sanitizedValue) {
+      setFilter(sanitizedValue);
+
+      // Save filter to hash
+      window.location.hash = sanitizedValue;
+    }
+  };
+
+  // Listen to hash changing
+  window.onhashchange = () => setFilter(sanitizeValue(hashValue));
+
+  const filteredProducts = props.products.filter(
+    product =>
+      !filter.length ||
+      (filter &&
+        product.name &&
+        product.name.toLowerCase().indexOf(filter.toLowerCase()) >= 0)
+  );
+
+  return (
+    <GridContainer>
+      <Search value={filter} callback={applySearch} />
+      <Grid>
+        {filteredProducts.length ? (
+          filteredProducts.map(product => (
             <Listitem product={product} key={product.product_id} />
-          ))}
-        </Grid>
-      </div>
-    );
-  }
-}
+          ))
+        ) : (
+          <Message>
+            {filter
+              ? i18n("No products found with '{filter}'", { filter })
+              : i18n("No products found")}
+          </Message>
+        )}
+      </Grid>
+    </GridContainer>
+  );
+};
 
 export default List;

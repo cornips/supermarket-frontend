@@ -3,7 +3,7 @@ import React from "react";
 import { Header, LogoContainer, Logo, Title } from "./Header.style";
 import logo from "../../assets/logo.svg";
 
-const Shop = props => {
+const ShopHeader = props => {
   return (
     <Header>
       <LogoContainer>
@@ -14,4 +14,4 @@ const Shop = props => {
   );
 };
 
-export default Shop;
+export default ShopHeader;

@@ -15,7 +15,8 @@ class Shop extends Component {
 
     this.state = {
       title: "Productoverzicht",
-      products: []
+      products: [],
+      filter: ""
     };
   }
 
@@ -34,6 +35,10 @@ class Shop extends Component {
       });
   };
 
+  setFilter = filter => {
+    if (this.state.filter !== filter) this.setState({ filter });
+  };
+
   handleTitleChange = title => {
     if (this.state.title !== title) this.setState({ title });
   };
@@ -42,6 +47,8 @@ class Shop extends Component {
     <List
       {...props}
       products={this.state.products}
+      filterCallback={this.setFilter}
+      filter={this.state.filter}
       handleTitleChange={this.handleTitleChange}
     />
   );

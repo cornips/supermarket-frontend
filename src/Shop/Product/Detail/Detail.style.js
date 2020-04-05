@@ -11,6 +11,7 @@ export const StyledDetail = styled.div`
           right: 0;
           bottom: 0;
           overflow: auto;
+          z-index: 1000;
           &:after {
             content: "";
             position: fixed;
@@ -19,7 +20,6 @@ export const StyledDetail = styled.div`
             bottom: 0;
             right: 0;
             background: rgba(0, 0, 0, 0.25);
-            z-index: 1000;
           }
         `
       : ""}
@@ -34,7 +34,7 @@ export const Content = styled.div`
           position: relative;
           left: 0;
           top: 3vh;
-          z-index: 1001;
+          z-index: 1;
           background: white;
           width: 500px;
           max-width: 84vw;
