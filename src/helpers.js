@@ -1,8 +1,10 @@
-const config = require("./config.js");
+import config from "./config";
+
+export default config;
 
 // Validate object contents based on given scheme
 // Returns boolean
-const validateObject = (object, scheme) => {
+export const validateObject = (object, scheme) => {
   // Validate if all required fields are provided
   if (Object.entries(object).length <= Object.entries(scheme).length) {
     const errorMessage = `Object does not contain all required fields according to scheme`;
@@ -46,8 +48,8 @@ const validateObject = (object, scheme) => {
 };
 
 // Validate property existance in config
-// Returns console.error on error, otherwise silent
-const validateConfig = (...validateProperty) => {
+// Trows Error on error, otherwise returns true
+export const validateConfig = (...validateProperty) => {
   for (const fullProperty of validateProperty) {
     let lastProperty = config;
 
@@ -66,44 +68,80 @@ const validateConfig = (...validateProperty) => {
   return true;
 };
 
-// Convert string to sanitized integer
-const stringToInt = string => {
-  string = string.toString();
-  return parseInt(string.replace(/\D/g, "")); //replace is faster then match+join https://jsben.ch/YPVJe
+// Validate property existance in config, but just return true or false
+export const softValidateConfig = (...validateProperty) => {
+  // Save original console.error function
+  const originalConsoleError = console.error;
+
+  try {
+    // Turn off console.error messages
+    window["console"]["error"] = () => {};
+
+    return validateConfig(...validateProperty);
+  } catch (errorMessage) {
+    return false;
+  } finally {
+    // Turn on console.error messages
+    window["console"]["error"] = originalConsoleError;
+  }
 };
 
-let i18n;
-if (validateConfig("locale")) {
-  const locale = require("./locale.js");
-  // Return translation from string if found and not null, otherwise return original string
-  i18n = (string, variables) => {
-    // Get dictionary for locale, otherwise use first dictonary
-    let dictionary = locale[config.locale];
-    if (!dictionary) dictionary = locale[Object.keys(locale)[0]];
+// Convert string to sanitized integer
+export const financial = float => {
+  // Create 2 decimal float of input
+  float = parseFloat(float).toFixed(2);
 
-    // Get translation, otherwise use original string
-    let translatedString = dictionary[string];
-    if (!translatedString) translatedString = string;
+  return float
+    .toString() // to string to use replace
+    .replace(".", "{decimalSeperator}") // save decimal separator for later
+    .replace(/(\d)(?=(\d{3})+(?!\d))/g, `$1${i18n("_thousandsSeparator")}`) // break with thousands seperator every 3rd integer
+    .replace("{decimalSeperator}00", "{decimalSeperator}-") // replace double zero's in decimal with dash
+    .replace("{decimalSeperator}", i18n("_decimalSeparator")); //replace decimal seperator temp variable with locale seperator
+};
 
-    // If variables are provided, replace them with their value
-    if (variables) {
-      for (const variable of Object.entries(variables)) {
-        translatedString = translatedString.replace(
-          `{${variable[0]}}`,
-          variable[1]
-        );
-      }
+const replaceVariablesInString = (string, variables) => {
+  if (variables) {
+    for (const variable of Object.entries(variables)) {
+      string = string.replace(`{${variable[0]}}`, variable[1]);
     }
+  }
+  return string;
+};
 
-    return translatedString;
-  };
-}
+// Return translation from string if found and not null, otherwise return original string
+export const i18n = (string, variables) => {
+  let locale = false;
+
+  try {
+    validateConfig("locale");
+    // Require instead of import to allow import fail
+    locale = require("./locale");
+  } catch {
+    // If locale fails, return raw string
+    if (string === "_thousandsSeparator") return " ";
+    // fallback to general separator based on https://en.wikipedia.org/wiki/Decimal_separator#Digit_grouping
+    else if (string === "_decimalSeparator") return ",";
+    // fallback to general separator based on https://en.wikipedia.org/wiki/Decimal_separator#Arabic_numerals
+    else return replaceVariablesInString(string, variables);
+  }
+
+  // Get dictionary for locale, otherwise use first dictonary
+  let dictionary = locale[config.locale];
+  if (!dictionary) dictionary = locale[Object.keys(locale)[0]];
+
+  // Get translation, otherwise use original string
+  let translatedString = dictionary[string];
+  if (!translatedString) translatedString = string;
+
+  // Replace possible variables with their value
+  return replaceVariablesInString(translatedString, variables);
+};
 
 /**
  * Determine if currently viewed from a larger screen
  * @return {boolean} True if screen is larger then medium breakpoint
  */
-const isLargerScreen = () => {
+export const isLargerScreen = () => {
   validateConfig("breakpoints.medium");
 
   const windowWidth =
@@ -113,14 +151,3 @@ const isLargerScreen = () => {
 
   return windowWidth > config.breakpoints.medium;
 };
-
-module.exports = Object.assign(
-  {
-    config,
-    validateObject,
-    validateConfig,
-    stringToInt,
-    isLargerScreen
-  },
-  validateConfig("locale") ? { i18n } : undefined
-); // Add i18n when enabled in config

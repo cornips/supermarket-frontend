@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import config from "../../config";
+import config from "../../helpers";
 
 export const StyledSearch = styled.div`
   margin: 1em auto;

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 
+import { i18n, financial } from "../../../helpers";
 import API from "../../../API";
 import CartButton from "../../Button/CartButton";
 import OverviewButton from "../../Button/OverviewButton";
@@ -38,7 +39,7 @@ class Detail extends Component {
       .then(product => {
         // Set name to parent component
         if (this.props.handleTitleChange)
-          this.props.handleTitleChange(product.name);
+          this.props.handleTitleChange(i18n(product.name));
 
         this.setState({ product });
       })
@@ -65,7 +66,7 @@ class Detail extends Component {
     const { popup } = this.props;
     const { product } = this.state;
 
-    const inlineName = popup ? <h2>{product.name}</h2> : "";
+    const inlineName = popup ? <h2>{i18n(product.name)}</h2> : "";
 
     return (
       <StyledDetail popup={popup}>
@@ -83,11 +84,13 @@ class Detail extends Component {
 
             <GridRight>
               {inlineName}
-              <ProductDescription>{product.description}</ProductDescription>
+              <ProductDescription>
+                {i18n(product.description)}
+              </ProductDescription>
             </GridRight>
 
             <ActionsBottom>
-              <ProductPrice>€ {product.price}</ProductPrice>
+              <ProductPrice>€ {financial(product.price)}</ProductPrice>
               <CartButton />
             </ActionsBottom>
           </GridBox>

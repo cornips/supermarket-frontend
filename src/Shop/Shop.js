@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { i18n, isLargerScreen } from "../helpers";
 
+import { i18n, isLargerScreen } from "../helpers";
 import API from "../API";
 import Header from "./Header/Header";
 import List from "./Product/List/List";

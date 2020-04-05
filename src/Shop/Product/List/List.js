@@ -40,7 +40,7 @@ const List = props => {
   const filteredProducts = props.products.filter(
     product =>
       !filter.length ||
-      (filter && product.name && findInString(product.name, filter))
+      (filter && product.name && findInString(i18n(product.name), filter))
   );
 
   return (

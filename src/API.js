@@ -1,5 +1,4 @@
-import config from "./config";
-import { validateConfig } from "./helpers";
+import config, { validateConfig } from "./helpers";
 
 // Validate config file
 validateConfig("api");

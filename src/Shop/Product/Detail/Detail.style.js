@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import config from "../../../config";
+import config from "../../../helpers";
 
 export const StyledDetail = styled.div`
   ${props =>

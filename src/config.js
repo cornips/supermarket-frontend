@@ -1,5 +1,6 @@
 const config = {
   locale: "nl_NL",
+  currency: "€",
   api: "https://s3-eu-west-1.amazonaws.com/developer-application-test/cart/",
   breakpoints: {
     small: 0,
@@ -10,4 +11,4 @@ const config = {
   }
 };
 
-module.exports = config;
+export default config;
