@@ -33,12 +33,14 @@ const List = props => {
   // Listen to hash changing
   window.onhashchange = () => setFilter(sanitizeValue(hashValue));
 
+  // Find occurence of characters in string
+  const findInString = (compareWith, string) =>
+    compareWith.toLowerCase().indexOf(string.toLowerCase()) >= 0;
+
   const filteredProducts = props.products.filter(
     product =>
       !filter.length ||
-      (filter &&
-        product.name &&
-        product.name.toLowerCase().indexOf(filter.toLowerCase()) >= 0)
+      (filter && product.name && findInString(product.name, filter))
   );
 
   return (
